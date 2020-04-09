@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "allowJs": true,
+    "declaration": true,
+    "types": ["reflect-metadata"]
+  },
+  "include": ["packages/**/*", "gulpfile.ts/**/*"],
+  "exclude": ["node_modules"]
+}

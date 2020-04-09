@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# ide
+/.vscode
+/.idea
+
+# misc
+.DS_Store
+lerna-debug.log
+npm-debug.log
+yarn-error.log
+/**/npm-debug.log
+/packages/**/.npmignore
+/packages/**/LICENSE
+/packages/**/README.md
+/packages/**/package-lock.json
+
+# bundle
+packages/**/*.d.ts
+packages/**/*.js
