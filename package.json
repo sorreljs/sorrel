@@ -7,7 +7,7 @@
     "build": "gulp buildPackage",
     "prebuild": "npm run clean && gulp copyMisc",
     "clean": "gulp cleanOutput",
-    "lint": "eslint 'packages/**/*.ts' --fix"
+    "lint": "eslint \"packages/**/*.ts\" --fix"
   },
   "repository": {
     "type": "git",
@@ -27,10 +27,13 @@
     "@typescript-eslint/parser": "^2.27.0",
     "del": "^5.1.0",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "lerna": "^3.20.2",
+    "prettier": "^2.0.4",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"
   },

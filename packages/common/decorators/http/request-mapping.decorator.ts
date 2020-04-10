@@ -11,26 +11,30 @@ const defaultMetadata: RequestMappingMetadata = {
   [METHOD_METADATA]: RequestMethod.GET
 };
 
-export const RequestMapping = (
+export function RequestMapping(
   metadata: RequestMappingMetadata = defaultMetadata
-): MethodDecorator => {
+): MethodDecorator {
   const pathMetadata = metadata[PATH_METADATA];
   const path = pathMetadata && pathMetadata.length ? pathMetadata : '/';
   const requestMethod = metadata[METHOD_METADATA] || RequestMethod.GET;
-
-  return <T>(_target: object, _key: string | symbol, descriptor: TypedPropertyDescriptor<T>) => {
-    const value = descriptor.value;
+  return <T>(
+    _target: object,
+    _key: string | symbol,
+    description: TypedPropertyDescriptor<T>
+  ) => {
+    const value = description.value;
     if (value) {
       Reflect.defineMetadata(METHOD_METADATA, requestMethod, value);
       Reflect.defineMetadata(PATH_METADATA, path, value);
     }
-    return descriptor;
+    return description;
   };
-};
+}
 
-const createMappingDecorator = (method: RequestMethod) => (
-  path?: RequestMappingMetadata['path']
-) => RequestMapping({method, path});
+function createMappingDecorator(method: RequestMethod) {
+  return (path?: RequestMappingMetadata['path']) =>
+    RequestMapping({method, path});
+}
 
 export const Get = createMappingDecorator(RequestMethod.GET);
 
