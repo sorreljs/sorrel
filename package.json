@@ -9,6 +9,14 @@
     "clean": "gulp cleanOutput",
     "lint": "eslint \"packages/**/*.ts\" --fix"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "packages/**/*.ts": "npm run lint"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sorreljs/sorrel.git"
@@ -32,7 +40,9 @@
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.0",
     "gulp-typescript": "^6.0.0-alpha.1",
+    "husky": "^4.2.5",
     "lerna": "^3.20.2",
+    "lint-staged": "^10.1.3",
     "prettier": "^2.0.4",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"

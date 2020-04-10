@@ -5,6 +5,3 @@ export function Controller(path = ''): ClassDecorator {
     Reflect.defineMetadata(PATH_METADATA, path, target);
   };
 }
-
-if ('node' in globalThis) {
-}
