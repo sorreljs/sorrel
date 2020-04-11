@@ -4,10 +4,11 @@
   "description": "Sorrel is  a simple, efficient and scalable node framework, based on koa",
   "main": "index.js",
   "scripts": {
+    "dev": "gulp buildPackageDev",
     "build": "gulp buildPackage",
     "prebuild": "npm run clean && gulp copyMisc",
     "clean": "gulp cleanOutput",
-    "lint": "eslint \"packages/**/*.ts\" --fix"
+    "lint": "eslint \"packages/**/*.ts\" \"gulpfile.ts/**/*.ts\" --fix"
   },
   "husky": {
     "hooks": {
@@ -30,6 +31,7 @@
   "homepage": "https://github.com/sorreljs/sorrel#readme",
   "devDependencies": {
     "@types/gulp": "^4.0.6",
+    "@types/gulp-sourcemaps": "0.0.32",
     "@types/koa": "^2.11.3",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
@@ -39,6 +41,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.0",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^6.0.0-alpha.1",
     "husky": "^4.2.5",
     "lerna": "^3.20.2",

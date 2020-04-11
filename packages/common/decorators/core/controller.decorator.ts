@@ -1,4 +1,4 @@
-import {PATH_METADATA} from 'constants';
+import {PATH_METADATA} from '../../constants';
 
 export function Controller(path = ''): ClassDecorator {
   return (target: object) => {

@@ -1,31 +1,17 @@
-import {createProject, Project} from 'gulp-typescript';
-import {packageMap} from '../config';
-import {dest, parallel} from 'gulp';
+import {packageOptions, factory} from '../utils/task-helper';
+import {parallel, series} from 'gulp';
+import {cleanBundle} from './clean';
+import {watchFile} from './watch';
 
-const modules = Object.keys(packageMap);
+export const buildPackage = parallel(buildPackageHandle(false));
 
-const packages = getPackages();
+export const buildPackageDev = series(
+  cleanBundle,
+  ...buildPackageHandle(),
+  parallel(watchFile)
+);
 
-export const buildPackage = parallel(buildPackageHandle());
-
-function buildPackageHandle() {
-  return modules.map(packageName => factory(packageName));
-}
-
-function factory(packageName: string) {
-  const task = () => packages[packageName]
-    .src()
-    .pipe(packages[packageName]())
-    .pipe(dest(packageMap[packageName]));
-
-  Object.assign(task, {displayName: packageName});
-  return task;
-}
-
-function getPackages() {
-  const packages: {[key: string]: Project} = {};
-  modules.forEach(packageName => {
-    packages[packageName] = createProject(`${packageMap[packageName]}/tsconfig.json`);
-  });
-  return packages;
+function buildPackageHandle(isDev = true) {
+  const module = Object.keys(packageOptions);
+  return module.map(packageName => factory(packageName, isDev));
 }

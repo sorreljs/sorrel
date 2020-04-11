@@ -6,6 +6,14 @@ export function cleanOutput() {
     `${source}/**/*.js`,
     `${source}/**/*.d.ts`,
     `${source}/**/*.js.map`,
-    `${source}/**/`
+    `${source}/**/README.md`,
+    `${source}/**/LICENSE`,
+    `${source}/**/.npmignore`,
+    `${source}/**/`,
+    'dist'
   ]);
+}
+
+export function cleanBundle() {
+  return del(['node_modules/@sorrel']);
 }

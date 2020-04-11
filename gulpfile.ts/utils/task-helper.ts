@@ -1,20 +1,54 @@
-import {readdirSync, statSync} from 'fs';
-import {join} from 'path';
+import {packageMap} from '../config';
+import {createProject, Project} from 'gulp-typescript';
+import {dest} from 'gulp';
+import {init, write} from 'gulp-sourcemaps';
 
-export function getFolders(dir: string) {
-  return readdirSync(dir).filter(file => isDirectory(join(dir, file)));
+interface PackageOptions {
+  [key: string]: Options;
 }
 
-export function getDirs(base: string) {
-  return getFolders(base).map(path => `${base}/${path}`);
+interface Options {
+  path: string;
+  tsProject: Project;
 }
 
-export function getDirMap(base: string) {
-  const map: {[key: string]: string} = {};
-  getFolders(base).map(path => map[path] = `${base}/${path}`);
-  return map;
+export const packageOptions = getPackages();
+
+export function factory(packageName: string, isDev: boolean) {
+  const options = packageOptions[packageName];
+  const {path, tsProject} = options;
+  return isDev
+    ? createDevTask(tsProject, packageName)
+    : createTask(tsProject, packageName, path);
 }
 
-function isDirectory(path: string) {
-  return statSync(path).isDirectory();
+function createDevTask(tsProject: Project, packageName: string) {
+  const task = () =>
+    tsProject
+      .src()
+      .pipe(init())
+      .pipe(tsProject())
+      .pipe(write('.'))
+      .pipe(dest(`node_modules/@sorrel/${packageName}`));
+  Object.assign(task, {displayName: `${packageName}:dev`});
+  return task;
+}
+
+function createTask(tsProject: Project, packageName: string, path: string) {
+  const task = () => tsProject.src().pipe(tsProject()).pipe(dest(path));
+  Object.assign(task, {displayName: packageName});
+  return task;
+}
+
+function getPackages() {
+  const packages: PackageOptions = {};
+  const modules = Object.keys(packageMap);
+  modules.forEach(packageName => {
+    const options: Options = {
+      path: packageMap[packageName],
+      tsProject: createProject(`${packageMap[packageName]}/tsconfig.json`)
+    };
+    packages[packageName] = options;
+  });
+  return packages;
 }
