@@ -32,8 +32,7 @@ module.exports = {
     'no-multiple-empty-lines': [1, {max: 1, maxBOF: 0, maxEOF: 0}],
     'eol-last': 1,
     'guard-for-in': 2,
-    'func-call-spacing': 2,
-    indent: [1, 2]
+    'func-call-spacing': 2
   },
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',

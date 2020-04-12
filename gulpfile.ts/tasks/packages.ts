@@ -1,15 +1,10 @@
 import {packageOptions, factory} from '../utils/task-helper';
-import {parallel, series} from 'gulp';
+import {series} from 'gulp';
 import {cleanBundle} from './clean';
-import {watchFile} from './watch';
 
-export const buildPackage = parallel(buildPackageHandle(false));
+export const buildPackage = series(buildPackageHandle(false));
 
-export const buildPackageDev = series(
-  cleanBundle,
-  ...buildPackageHandle(),
-  parallel(watchFile)
-);
+export const buildPackageDev = series(cleanBundle, ...buildPackageHandle());
 
 function buildPackageHandle(isDev = true) {
   const module = Object.keys(packageOptions);

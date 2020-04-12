@@ -1,6 +1,6 @@
 import {packageMap} from '../config';
 import {createProject, Project} from 'gulp-typescript';
-import {dest} from 'gulp';
+import {dest, watch} from 'gulp';
 import {init, write} from 'gulp-sourcemaps';
 
 interface PackageOptions {
@@ -18,11 +18,11 @@ export function factory(packageName: string, isDev: boolean) {
   const options = packageOptions[packageName];
   const {path, tsProject} = options;
   return isDev
-    ? createDevTask(tsProject, packageName)
+    ? createDevTask(tsProject, packageName, path)
     : createTask(tsProject, packageName, path);
 }
 
-function createDevTask(tsProject: Project, packageName: string) {
+function createDevTask(tsProject: Project, packageName: string, path: string) {
   const task = () =>
     tsProject
       .src()
@@ -31,6 +31,7 @@ function createDevTask(tsProject: Project, packageName: string) {
       .pipe(write('.'))
       .pipe(dest(`node_modules/@sorrel/${packageName}`));
   Object.assign(task, {displayName: `${packageName}:dev`});
+  watch(`${path}/**/*.ts`, task);
   return task;
 }
 

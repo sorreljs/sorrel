@@ -9,8 +9,18 @@
     "allowJs": true,
     "declaration": true,
     "outDir": "dist",
-    "types": ["reflect-metadata"]
+    "types": [
+      "reflect-metadata"
+    ],
+    "lib": [
+      "ES7"
+    ]
   },
-  "include": ["packages/**/*", "gulpfile.ts/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "packages/**/*",
+    "gulpfile.ts/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
