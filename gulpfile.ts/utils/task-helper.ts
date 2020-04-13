@@ -2,6 +2,8 @@ import {packageMap} from '../config';
 import {createProject, Project} from 'gulp-typescript';
 import {dest, watch} from 'gulp';
 import {init, write} from 'gulp-sourcemaps';
+import {sep, parse} from 'path';
+import * as del from 'del';
 
 interface PackageOptions {
   [key: string]: Options;
@@ -31,8 +33,27 @@ function createDevTask(tsProject: Project, packageName: string, path: string) {
       .pipe(write('.'))
       .pipe(dest(`node_modules/@sorrel/${packageName}`));
   Object.assign(task, {displayName: `${packageName}:dev`});
-  watch(`${path}/**/*.ts`, task);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  watch(`${path}/**/*.ts`, {events: 'all'}, task).on('unlink', unlink);
   return task;
+}
+
+function unlink(path: string) {
+  const {name, dir} = parse(path);
+  const delPath =
+    dir
+      .replace(/^packages/, 'node_modules/@sorrel')
+      .split(sep)
+      .join('/') +
+    '/' +
+    name;
+  del([
+    `${delPath}.js`,
+    `${delPath}.js.map`,
+    `${delPath}.d.ts`,
+    `${delPath}.d.ts.map`
+  ]);
 }
 
 function createTask(tsProject: Project, packageName: string, path: string) {

@@ -51,6 +51,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "iterare": "^1.2.0",
     "koa": "^2.11.0",
     "reflect-metadata": "^0.1.13"
   }
