@@ -1,5 +1,5 @@
 import {PATH_METADATA, HOST_METADATA} from '../../constants';
-import {isUndefined, isString} from 'utils';
+import {isUndefined, isString} from '../../utils';
 
 export interface ControllerOptions {
   path?: string;

@@ -6,9 +6,6 @@
     "skipLibCheck": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "types": [
-      "reflect-metadata"
-    ]
+    "experimentalDecorators": true
   }
 }

@@ -1,5 +1,5 @@
-import {ModuleMetadata} from 'interfaces';
-import {validateModuleKeys} from 'utils';
+import {ModuleMetadata} from '../../interfaces';
+import {validateModuleKeys} from '../../utils';
 
 export function Module(metadata: ModuleMetadata): ClassDecorator {
   const keys = Object.keys(metadata);
