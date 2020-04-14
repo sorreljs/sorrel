@@ -1,11 +1,11 @@
 export class ApplicationConfig {
   private globalPrefix = '';
 
-  getGlobalPrefix() {
+  public getGlobalPrefix() {
     return this.globalPrefix;
   }
 
-  setGlobalPrefix(prefix: string) {
+  public setGlobalPrefix(prefix: string) {
     this.globalPrefix = prefix;
   }
 }

@@ -6,6 +6,9 @@
     "skipLibCheck": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "lib": [
+      "ES2018"
+    ]
   }
 }

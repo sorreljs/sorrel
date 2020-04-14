@@ -1,7 +1,11 @@
-import {isConstructor, isNil, isFunction, Prototype} from '@sorrel/common';
+import {Prototype} from '@sorrel/common';
+import {isConstructor, isNil, isFunction} from '@sorrel/common/utils';
 import {iterate} from 'iterare';
 
 export class MetadataScanner {
+  constructor() {
+    console.log(1);
+  }
   scanFromPrototype<T, R>(
     instance: T,
     prototype: Prototype,

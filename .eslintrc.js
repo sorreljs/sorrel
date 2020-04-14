@@ -7,8 +7,22 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
   rules: {
     'prettier/prettier': 2,
+    '@typescript-eslint/explicit-member-accessibility': [
+      1,
+      {
+        accessibility: 'explicit',
+        overrides: {
+          accessors: 'no-public',
+          constructors: 'no-public',
+          methods: 'explicit',
+          properties: 'explicit',
+          parameterProperties: 'explicit'
+        }
+      }
+    ],
+    '@typescript-eslint/member-ordering': 1,
     '@typescript-eslint/explicit-function-return-type': 0,
-    '@typescript-eslint/no-use-before-define': [2, {functions: false}],
+    '@typescript-eslint/no-use-before-define': [1, {functions: false}],
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/semi': 1,
     'array-bracket-spacing': [2, 'never'],
