@@ -4,9 +4,9 @@ import {iterate} from 'iterare';
 
 export class MetadataScanner {
   constructor() {
-    console.log(1);
+    // pass
   }
-  scanFromPrototype<T, R>(
+  public scanFromPrototype<T, R>(
     instance: T,
     prototype: Prototype,
     callback: () => R
@@ -18,7 +18,7 @@ export class MetadataScanner {
       .toArray();
   }
 
-  *getAllMethodNames(prototype: Prototype): IterableIterator<string> {
+  private *getAllMethodNames(prototype: Prototype): IterableIterator<string> {
     const isMethod = (prop: string) => {
       const descriptor = Object.getOwnPropertyDescriptor(prototype, prop);
       if (descriptor?.get || descriptor?.set) {

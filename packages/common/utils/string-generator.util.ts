@@ -5,6 +5,6 @@ export function randomStringGenerator() {
   return uuid();
 }
 
-export function hash(object: any, options?: any) {
-  return hashStatic(object, options);
+export function hash(object: any) {
+  return hashStatic(object, {ignoreUnknown: true});
 }

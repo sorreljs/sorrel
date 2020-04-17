@@ -1,5 +1,5 @@
 import {SorrelContainer} from './container';
-import {Type} from '@sorrel/common';
+import {Type, Provider} from '@sorrel/common';
 
 export class Module {
   private readonly _id!: string;
@@ -11,7 +11,7 @@ export class Module {
   private readonly _exports = new Set();
 
   constructor(
-    private readonly _metaType: Type<any>,
+    private readonly _metatype: Type<any>,
     private readonly _container: SorrelContainer
   ) {}
 
@@ -44,14 +44,22 @@ export class Module {
   }
 
   get instance() {
-    if (!this._providers.has(this._metaType.name)) {
+    if (!this._providers.has(this._metatype.name)) {
       throw new Error('runtime error');
     }
-    const module = this._providers.get(this._metaType.name);
+    const module = this._providers.get(this._metatype.name);
     return module.instance;
   }
 
-  get metaType() {
-    return this._metaType;
+  get metatype() {
+    return this._metatype;
+  }
+
+  public addRelatedModule(module: Module) {
+    this._imports.add(module);
+  }
+
+  public addProvider(provider: Provider) {
+    // pass
   }
 }

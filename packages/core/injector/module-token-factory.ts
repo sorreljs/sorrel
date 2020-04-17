@@ -1,23 +1,29 @@
 import {Type} from '@sorrel/common';
+import {hash} from '@sorrel/common/utils';
 import {randomStringGenerator} from '@sorrel/common/utils';
 
 export class ModuleTokenFactory {
   private readonly moduleIdsCache = new WeakMap<Type<any>, string>();
 
-  public create(metaType: Type<any>) {
-    // pass
+  public create(metatype: Type<any>) {
+    const moduleId = this.getModuleId(metatype);
+    const opaqueToken = {
+      id: moduleId,
+      module: this.getModuleName(metatype)
+    };
+    return hash(opaqueToken);
   }
 
-  public getModuleId(metaType: Type<any>) {
-    let moduleId = this.moduleIdsCache.get(metaType);
+  public getModuleId(metatype: Type<any>) {
+    let moduleId = this.moduleIdsCache.get(metatype);
     if (!moduleId) {
       moduleId = randomStringGenerator();
-      this.moduleIdsCache.set(metaType, moduleId);
+      this.moduleIdsCache.set(metatype, moduleId);
     }
     return moduleId;
   }
 
-  public getModuleName(metaType: Type<any>) {
-    return metaType.name;
+  public getModuleName(metatype: Type<any>) {
+    return metatype.name;
   }
 }

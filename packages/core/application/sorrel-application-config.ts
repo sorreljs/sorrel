@@ -1,4 +1,4 @@
-export class ApplicationConfig {
+export class SorrelApplicationConfig {
   private globalPrefix = '';
 
   public getGlobalPrefix() {
