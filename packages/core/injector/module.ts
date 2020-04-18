@@ -62,4 +62,12 @@ export class Module {
   public addProvider(provider: Provider) {
     // pass
   }
+
+  public addController(controller: Type<any>) {
+    // pass
+  }
+
+  public addExportProvider(exportProvider: Type<any>) {
+    // pass
+  }
 }

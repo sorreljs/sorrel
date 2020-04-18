@@ -53,6 +53,22 @@ export class SorrelContainer {
     return moduleRef.addProvider(provider);
   }
 
+  public addController(controller: Type<any>, token: string) {
+    const moduleRef = this.modules.get(token);
+    if (!moduleRef) {
+      return;
+    }
+    return moduleRef.addController(controller);
+  }
+
+  public addExportProvider(exportProvider: Type<any>, token: string) {
+    const moduleRef = this.modules.get(token);
+    if (!moduleRef) {
+      return;
+    }
+    return moduleRef.addExportProvider(exportProvider);
+  }
+
   public setHttpServer(httpServer: any) {
     this.httpServer = httpServer;
   }
