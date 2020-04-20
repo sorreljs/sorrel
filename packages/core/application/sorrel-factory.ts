@@ -1,4 +1,4 @@
-import {Type, Module, Controller} from '@sorrel/common';
+import {Type, Module, Controller, Injectable} from '@sorrel/common';
 import * as Koa from 'koa';
 import {SorrelApplicationConfig} from './sorrel-application-config';
 import {SorrelContainer} from '../injector';
@@ -27,7 +27,6 @@ export class SorrelFactoryStatic {
       new MetadataScanner(),
       applicationConfig
     );
-    container.setHttpServer(httpServer);
 
     dependenciesScanner.scan(module);
     return container;
@@ -36,11 +35,23 @@ export class SorrelFactoryStatic {
 
 export const SorrelFactory = new SorrelFactoryStatic();
 
+@Injectable()
+class TestBaseService {}
+
+@Injectable()
+class TestService {
+  constructor(private readonly testBaseService: TestBaseService) {}
+}
+
 @Controller()
-class TestController {}
+class TestController {
+  constructor(private readonly testService: TestService) {}
+}
 
 @Module({
-  controllers: [TestController]
+  controllers: [TestController],
+  providers: [TestService, TestBaseService],
+  exports: [TestService]
 })
 class TestModule {}
 

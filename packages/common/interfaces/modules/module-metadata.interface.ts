@@ -1,7 +1,12 @@
 import {Type} from '../type.interface';
+
+export type Provider<T = any> = Type<T>;
+export type Controller<T = any> = Type<T>;
+export type Import<T = any> = Type<T>;
+export type Export<T = any> = Type<T>;
 export interface ModuleMetadata {
-  imports?: Array<Type<any>>;
-  controllers?: Array<Type<any>>;
-  providers?: Array<Type<any>>;
-  exports?: Array<Type<any>>;
+  imports?: Import[];
+  controllers?: Controller[];
+  providers?: Provider[];
+  exports?: Export[];
 }

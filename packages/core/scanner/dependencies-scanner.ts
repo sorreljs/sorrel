@@ -14,7 +14,6 @@ export class DependenciesScanner {
   public scan(module: Type<any>) {
     this.scanFromModule(module);
     this.scanModulesFromDependencies();
-    console.log(this.container);
   }
 
   private scanFromModule(module: Type<any>, contextRegister: Module[] = []) {
@@ -42,9 +41,9 @@ export class DependenciesScanner {
 
   private reflectImports(module: Type<any>, token: string) {
     const modules = [...this.reflectMetadata(module, MODULE_METADATA.IMPORTS)];
-    for (const related of modules) {
+    modules.forEach(related => {
       this.insertImport(related, token);
-    }
+    });
   }
 
   private reflectProviders(module: Type<any>, token: string) {

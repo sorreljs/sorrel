@@ -1,4 +1,5 @@
 import {Type} from '@sorrel/common';
+import {Controller, Provider, Export} from '@sorrel/common/interfaces';
 import {SorrelApplicationConfig} from '../application';
 import {ModuleContainer} from './module-container';
 import {ModuleCompiler} from './module-compiler';
@@ -9,13 +10,8 @@ export class SorrelContainer {
   private readonly moduleTokenFactory = new ModuleTokenFactory();
   private readonly moduleCompiler = new ModuleCompiler(this.moduleTokenFactory);
   private readonly modules = new ModuleContainer();
-  private httpServer: any;
 
-  constructor(private readonly _applicationConfig: SorrelApplicationConfig) {}
-
-  get applicationConfig() {
-    return this._applicationConfig;
-  }
+  constructor(public readonly applicationConfig: SorrelApplicationConfig) {}
 
   public addModule(metatype: Type<any>) {
     if (!metatype) {
@@ -45,7 +41,7 @@ export class SorrelContainer {
     related && moduleRef.addRelatedModule(related);
   }
 
-  public addProvider(provider: Type<any>, token: string) {
+  public addProvider(provider: Provider, token: string) {
     const moduleRef = this.modules.get(token);
     if (!moduleRef) {
       return;
@@ -53,7 +49,7 @@ export class SorrelContainer {
     return moduleRef.addProvider(provider);
   }
 
-  public addController(controller: Type<any>, token: string) {
+  public addController(controller: Controller, token: string) {
     const moduleRef = this.modules.get(token);
     if (!moduleRef) {
       return;
@@ -61,15 +57,11 @@ export class SorrelContainer {
     return moduleRef.addController(controller);
   }
 
-  public addExportProvider(exportProvider: Type<any>, token: string) {
+  public addExportProvider(exportProvider: Export, token: string) {
     const moduleRef = this.modules.get(token);
     if (!moduleRef) {
       return;
     }
     return moduleRef.addExportProvider(exportProvider);
-  }
-
-  public setHttpServer(httpServer: any) {
-    this.httpServer = httpServer;
   }
 }
