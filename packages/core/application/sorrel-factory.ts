@@ -29,6 +29,7 @@ export class SorrelFactoryStatic {
     );
 
     dependenciesScanner.scan(module);
+    instanceLoader.createInstancesOfDependencies();
     return container;
   }
 }

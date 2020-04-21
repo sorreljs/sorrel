@@ -3,14 +3,15 @@ import {randomStringGenerator} from '@sorrel/common/utils';
 import {SorrelContainer} from './container';
 import {Controller, Provider, Export} from '@sorrel/common/interfaces';
 import {InstanceWrapper} from './instance-wrapper';
+import {InstanceWrapperContainer} from './instance-wrapper-container';
 
 export class Module {
   public readonly id: string;
   public readonly imports = new Set<Module>();
-  public readonly providers = new Map<any, InstanceWrapper>();
-  public readonly injectable = new Map<any, InstanceWrapper>();
-  public readonly controllers = new Map<any, InstanceWrapper>();
-  public readonly middlewares = new Map<any, InstanceWrapper>();
+  public readonly providers = new InstanceWrapperContainer<Provider>();
+  public readonly injectable = new InstanceWrapperContainer<any>();
+  public readonly controllers = new InstanceWrapperContainer<Controller>();
+  public readonly middlewares = new InstanceWrapperContainer();
   public readonly exports = new Set<string | symbol>();
 
   constructor(
@@ -33,11 +34,14 @@ export class Module {
   }
 
   public addProvider(provider: Provider) {
-    this.providers.set(provider.name, new InstanceWrapper());
+    this.providers.set(provider.name, new InstanceWrapper(provider, this));
   }
 
   public addController(controller: Controller) {
-    this.controllers.set(controller.name, new InstanceWrapper());
+    this.controllers.set(
+      controller.name,
+      new InstanceWrapper(controller, this)
+    );
   }
 
   public addExportProvider(exportProvider: Export) {
