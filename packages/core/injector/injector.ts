@@ -1,5 +1,5 @@
 import {Type} from '@sorrel/common';
-import {Provider} from '@sorrel/common/interfaces';
+import {Provider, Controller} from '@sorrel/common/interfaces';
 import {InstanceWrapper} from './instance-wrapper';
 import {Module} from './module';
 import {InstanceWrapperContainer} from './instance-wrapper-container';
@@ -18,6 +18,14 @@ export class Injector {
     this.loadInstance(wrapper, providers, moduleRef);
   }
 
+  public loadController(
+    wrapper: InstanceWrapper<Controller>,
+    moduleRef: Module
+  ) {
+    const {controllers} = moduleRef;
+    this.loadInstance(wrapper, controllers, moduleRef);
+  }
+
   private loadInstance<T>(
     wrapper: InstanceWrapper<T>,
     wrapperContainer: InstanceWrapperContainer<T>,
@@ -28,8 +36,8 @@ export class Injector {
     if (!targetWrapper) {
       throw new Error('xxx');
     }
-    const callback = (deps: unknown[]) => {
-      const instance = this.instantiateClass(deps, wrapper);
+    const callback = (instances: unknown[]) => {
+      this.instantiateClass(instances, wrapper);
     };
     this.resolveConstructorParams(wrapper, moduleRef, callback);
   }
@@ -40,16 +48,23 @@ export class Injector {
     callback: (...args: any) => any
   ) {
     const dependencies = this.reflectConstructorParams(wrapper.metatype);
-    callback(dependencies);
+    const instances = dependencies.map(param => {
+      const {providers} = moduleRef;
+      return providers.get(param.name)?.instance;
+    });
+    callback(instances);
   }
 
-  private reflectConstructorParams(metatype: Type<any>): any[] {
+  private reflectConstructorParams(metatype: Type<any>): Type<any>[] {
     return Reflect.getMetadata('design:paramtypes', metatype) || [];
   }
 
-  private instantiateClass<T>(deps: unknown[], wrapper: InstanceWrapper<T>) {
+  private instantiateClass<T>(
+    instances: unknown[],
+    wrapper: InstanceWrapper<T>
+  ) {
     const {metatype, instance} = wrapper;
-    Object.assign(instance, new metatype(...deps));
+    Object.assign(instance, new metatype(...instances));
     return instance;
   }
 }

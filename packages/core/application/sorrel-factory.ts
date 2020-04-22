@@ -1,5 +1,4 @@
-import {Type, Module, Controller, Injectable} from '@sorrel/common';
-import * as Koa from 'koa';
+import {Type, Module, Controller, Injectable, Get} from '@sorrel/common';
 import {SorrelApplicationConfig} from './sorrel-application-config';
 import {SorrelContainer} from '../injector';
 import {SorrelApplication} from './sorrel-application';
@@ -9,17 +8,15 @@ import {MetadataScanner} from '../scanner/metadata-scanner';
 
 export class SorrelFactoryStatic {
   public create(module: Type<any>) {
-    const httpServer = new Koa();
     const applicationConfig = new SorrelApplicationConfig();
     const container = new SorrelContainer(applicationConfig);
-    this.init(module, container, applicationConfig, httpServer);
+    return this.init(module, container, applicationConfig);
   }
 
   public init(
     module: Type<any>,
     container: SorrelContainer,
-    applicationConfig: SorrelApplicationConfig,
-    httpServer: Koa
+    applicationConfig: SorrelApplicationConfig
   ) {
     const instanceLoader = new InstanceLoader(container);
     const dependenciesScanner = new DependenciesScanner(
@@ -27,10 +24,11 @@ export class SorrelFactoryStatic {
       new MetadataScanner(),
       applicationConfig
     );
-
     dependenciesScanner.scan(module);
     instanceLoader.createInstancesOfDependencies();
-    return container;
+    const instance = new SorrelApplication(container, applicationConfig);
+
+    return instance;
   }
 }
 
@@ -44,9 +42,13 @@ class TestService {
   constructor(private readonly testBaseService: TestBaseService) {}
 }
 
-@Controller()
+@Controller('aaa')
 class TestController {
   constructor(private readonly testService: TestService) {}
+  @Get()
+  public test() {
+    console.log('test');
+  }
 }
 
 @Module({
@@ -66,5 +68,6 @@ class AppController {}
 class AppModule {}
 
 const app = SorrelFactory.create(AppModule);
+app.listen(8080);
 
 console.log(app);

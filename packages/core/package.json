@@ -8,6 +8,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "reflect-metadata": "^0.1.13"
+    "iterare": "^1.2.0",
+    "reflect-metadata": "^0.1.13",
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8"
   }
 }

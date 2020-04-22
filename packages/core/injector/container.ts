@@ -5,11 +5,14 @@ import {ModuleContainer} from './module-container';
 import {ModuleCompiler} from './module-compiler';
 import {ModuleTokenFactory} from './module-token-factory';
 import {Module} from './module';
+import {HttpService} from '../http-service/http-server';
 
 export class SorrelContainer {
   private readonly moduleTokenFactory = new ModuleTokenFactory();
   private readonly moduleCompiler = new ModuleCompiler(this.moduleTokenFactory);
   private readonly modules = new ModuleContainer();
+
+  private httpService!: HttpService;
 
   constructor(public readonly applicationConfig: SorrelApplicationConfig) {}
 
@@ -63,5 +66,9 @@ export class SorrelContainer {
       return;
     }
     return moduleRef.addExportProvider(exportProvider);
+  }
+
+  public setHttpService(httpService: HttpService) {
+    this.httpService = httpService;
   }
 }

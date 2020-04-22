@@ -7,9 +7,8 @@ export class MetadataScanner {
     // pass
   }
   public scanFromPrototype<T, R>(
-    instance: T,
     prototype: Prototype,
-    callback: () => R
+    callback: (name: string) => R
   ): R[] {
     const methodNames = new Set(this.getAllMethodNames(prototype));
     return iterate(methodNames)

@@ -16,6 +16,14 @@ export class InstanceLoader {
   private createPrototypes(modules: ModuleContainer) {
     modules.forEach(module => {
       this.createPrototypesOfProviders(module);
+      this.createPrototypesOfControllers(module);
+    });
+  }
+
+  private createInstances(modules: ModuleContainer) {
+    modules.forEach(module => {
+      this.createInstancesOfProviders(module);
+      this.createInstancesOfControllers(module);
     });
   }
 
@@ -25,15 +33,21 @@ export class InstanceLoader {
     wrapper.forEach(item => this.injector.loadPrototype(item, providers));
   }
 
-  private createInstances(modules: ModuleContainer) {
-    modules.forEach(module => {
-      this.createInstancesOfProviders(module);
-    });
+  private createPrototypesOfControllers(module: Module) {
+    const {controllers} = module;
+    const wrapper = [...controllers.values()];
+    wrapper.forEach(item => this.injector.loadPrototype(item, controllers));
   }
 
   private createInstancesOfProviders(module: Module) {
     const {providers} = module;
     const wrapper = [...providers.values()];
     wrapper.forEach(item => this.injector.loadProvider(item, module));
+  }
+
+  private createInstancesOfControllers(module: Module) {
+    const {controllers} = module;
+    const wrapper = [...controllers.values()];
+    wrapper.forEach(item => this.injector.loadController(item, module));
   }
 }
